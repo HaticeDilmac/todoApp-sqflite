@@ -8,12 +8,11 @@ class TodoDB {
 
   Future<void> createTable(Database database) async {
     await database.execute("""CREATE TABLE IF NOT EXISTS $tableName (
-       "id"  INTEGER NOT NULL,
-       "title" TEXT NOT NULL,
-        "created_at"  INTEGER NOT NULL DEFAULT (cast(strftime('%s','now') as int))
-        "updated_at" INTEGER,
-        PRIMARY KEY("id"  AUTOINCREAMENT)
-      );""");
+     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+     "title" TEXT NOT NULL,
+     "created_at" INTEGER NOT NULL DEFAULT (CAST(strftime('%s','now') AS int)),
+     "updated_at" INTEGER
+  );""");
   }
 
   Future<int> create({required String title}) async {
@@ -53,6 +52,6 @@ class TodoDB {
 
   Future<void> delete(int id) async {
     final database = await DatabaseService().database; //connect database
-    await database.rawDelete('''DELETE FROM $tableName WHERE id= ?''',[id]);
+    await database.rawDelete('''DELETE FROM $tableName WHERE id= ?''', [id]);
   }
 }
