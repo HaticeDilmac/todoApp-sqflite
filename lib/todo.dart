@@ -25,7 +25,7 @@ class _ToDoPageState extends State<ToDoPage> {
   @override
   void initState() {
     super.initState();
-    fetchTodos(); // Verileri almak için sayfa yüklendiğinde fetchTodos çağrılıyor
+    fetchTodos();
   }
 
   @override
@@ -41,7 +41,9 @@ class _ToDoPageState extends State<ToDoPage> {
             context: context,
             builder: (_) => CreateTodoWidget(
               onSubmit: (title) async {
-                await todoDB.create(title: title);
+                await todoDB.create(
+                  title: title,
+                );
                 if (!mounted) return;
                 fetchTodos();
               },
@@ -74,6 +76,9 @@ class _ToDoPageState extends State<ToDoPage> {
               itemBuilder: (context, index) {
                 final todo = todos[index];
                 final subTitle = DateFormat('yyyy/MM/dd').format(
+                  DateTime.parse(todo.updatedTime ?? todo.createdTime),
+                );
+                final hour = DateFormat('hh:mm').format(
                   DateTime.parse(todo.updatedTime ?? todo.createdTime),
                 );
                 return ListTile(

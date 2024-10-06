@@ -17,12 +17,12 @@ class ToDo {
         
         // Null kontrolü ekleyelim ve varsa DateTime çevirisini yapalım
         createdTime: map['created_at'] != null
-            ? DateTime.fromMicrosecondsSinceEpoch(map['created_at']).toIso8601String()
+            ? DateTime.fromMillisecondsSinceEpoch(map['created_at']).toIso8601String()
             : '',
 
         // updatedTime için de null kontrolü yapalım
         updatedTime: map['updated_at'] != null
-            ? DateTime.fromMicrosecondsSinceEpoch(map['updated_at']).toIso8601String()
+            ? DateTime.fromMillisecondsSinceEpoch(map['updated_at']).toIso8601String()
             : null,
       );
 }
