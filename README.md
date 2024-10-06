@@ -14,8 +14,7 @@ The ToDo App is a simple task management application built with Flutter, allowin
 
 # Screenshots
 <img width="311" alt="calculator" src="https://github.com/user-attachments/assets/f44cff6d-85c7-402e-b014-7fd6e8eec4e8"> 
-<img width="311" alt="calculator" src="https://github.com/user-attachments/assets/966309fe-afe6-400c-813e-d6f38d08638d">  
-
+<img width="311" alt="calculator" src="https://github.com/user-attachments/assets/832990a3-867e-4aae-bc0b-67ae7581da38">   
 
 
 ## Installation
