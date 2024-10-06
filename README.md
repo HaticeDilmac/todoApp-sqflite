@@ -14,7 +14,7 @@ The ToDo App is a simple task management application built with Flutter, allowin
 
 # Screenshots
 #![Simulator Screenshot - iPhone 15 - 2024-10-06 at 15 38 15](https://github.com/user-attachments/assets/f44cff6d-85c7-402e-b014-7fd6e8eec4e8)
-![Screenshot 2024-10-06 at 01 07 26](https://github.com/user-attachments/assets/5f6ab462-2888-4f7e-a403-018f7c574d10)
+![Simulator Screenshot - iPhone 15 - 2024-10-06 at 16 13 12](https://github.com/user-attachments/assets/966309fe-afe6-400c-813e-d6f38d08638d)
 
 
 
