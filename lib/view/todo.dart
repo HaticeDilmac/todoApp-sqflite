@@ -14,17 +14,17 @@ class ToDoPage extends StatefulWidget {
 
 class _ToDoPageState extends State<ToDoPage> {
   Future<List<ToDo>>? futureTodos;
-  final todoDB = TodoDB();
+  final todoDB = TodoDB(); //todoDB access
 
   @override
   void initState() {
     super.initState();
-    fetchTodos();
+    fetchTodos(); //get function apicall function
   }
 
   void fetchTodos() {
     setState(() {
-      futureTodos = todoDB.fetchAll();
+      futureTodos = todoDB.fetchAll(); //todoDB task list access
     });
   }
 
@@ -45,14 +45,18 @@ class _ToDoPageState extends State<ToDoPage> {
               future: futureTodos,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
+                  //loading  state
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return const Center(child: Text('Error fetching todos'));
+                  return const Center(
+                      child: Text('Error fetching todos')); //erorr state
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  //if todos list is null
                   return const Center(child: Text('No todos...'));
                 } else {
                   final todos = snapshot.data!;
                   return Stack(
+                    //todos list isNotEmpty
                     children: [
                       ListView.separated(
                         separatorBuilder: (context, index) =>
@@ -64,15 +68,14 @@ class _ToDoPageState extends State<ToDoPage> {
                             DateTime.parse(
                                 (todo.updatedTime ?? todo.createdTime)),
                           );
-                          final date = DateFormat('hh:mm').format(
+                          final date = DateFormat('HH:mm').format(
                             DateTime.parse(
                                 (todo.updatedTime ?? todo.createdTime)),
                           );
-
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Nokta ekliyoruz her satıra
+                              //color circle widget
                               Container(
                                   height: 80,
                                   width: 80,
@@ -83,63 +86,7 @@ class _ToDoPageState extends State<ToDoPage> {
                                           color: Colors.amber, width: 3),
                                       borderRadius: BorderRadius.circular(40)),
                                   child: Center(child: Text(date))),
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                    right: 20,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromARGB(255, 238, 180, 4),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: ListTile(
-                                          title: Text(
-                                            todo.title,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Text(subTitle,
-                                              style: const TextStyle(
-                                                  color: Colors.black54)),
-                                          onTap: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  CreateTodoWidget(
-                                                todo: todo,
-                                                onSubmit: (title) async {
-                                                  await todoDB.update(
-                                                      id: todo.id,
-                                                      title: title);
-                                                  fetchTodos();
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      deleteAlertMethod(context, todo),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              taskCardWidget(todo, subTitle, context),
                             ],
                           );
                         },
@@ -151,6 +98,61 @@ class _ToDoPageState extends State<ToDoPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Expanded taskCardWidget(ToDo todo, String subTitle, BuildContext context) {
+    return Expanded(
+      //task card widget
+      child: Container(
+        margin: const EdgeInsets.only(
+          right: 20,
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 238, 180, 4),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ListTile(
+                title: Text(
+                  todo.title,
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                subtitle: Text(subTitle,
+                    style: const TextStyle(color: Colors.black54)),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CreateTodoWidget(
+                      todo: todo,
+                      onSubmit: (title) async {
+                        await todoDB.update(id: todo.id, title: title);
+                        fetchTodos();
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+            deleteAlertMethod(context, todo),
+          ],
+        ),
       ),
     );
   }

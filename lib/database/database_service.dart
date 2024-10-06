@@ -3,74 +3,40 @@ import 'package:path/path.dart';
 import 'package:todoapp/database/todo_db.dart';
 
 class DatabaseService {
-  Database? _database;
+  Database? _database; //database value
 
+  // database access getter
   Future<Database> get database async {
     if (_database != null) {
-      return _database!;
+      return _database!; // Return the same database if it was created before
     }
-    _database = await _initialize();
+    _database = await _initialize(); //If not, initialize the database
     return _database!;
   }
 
+  // getter that returns the full path of the database file
   Future<String> get fullPath async {
-    const name = 'todo.db'; //database name
-    final path = await getDatabasesPath(); //database route
-    return join(path, name);
+    const name = 'todo.db'; // database file name
+    final path =
+        await getDatabasesPath(); // Get the device's path used for databases
+    return join(path, name); //  Database path and name join
   }
 
+  // Database start method
   Future<Database> _initialize() async {
-    final path = await fullPath;
-    var database = await openDatabase(path,
-        version: 1, onCreate: create, singleInstance: true);
-    return database;
+    final path = await fullPath; //database file all path
+    var database = await openDatabase(
+      path, // database file path
+      version: 1, // Database version is important for migrations
+      onCreate: create, // Function to run when creating database
+      singleInstance: true, // Allows use of a single instance
+    );
+    return database; // Return created/exported database
   }
 
+  // Database table method
   Future<void> create(Database database, int version) async {
-    await TodoDB().createTable(database);
+    await TodoDB().createTable(
+        database); // The createTable function in the TodoDB class is called
   }
 }
-
-
-// import 'package:sqflite/sqflite.dart';
-// import 'package:path/path.dart';
-// import 'package:todo_app/database/todo_db.dart';
-
-// class DatabaseService {
-//   Database? _database;
-
-//   Future<Database> get database async {
-//     if (_database != null) {
-//       return _database!;
-//     }
-//     _database = await _initialize();
-//     return _database!;
-//   }
-
-//   Future<String> get fullPath async {
-//     const name = 'todo.db'; // database name
-//     final path = await getDatabasesPath(); // database route
-//     return join(path, name);
-//   }
-
-//   Future<Database> _initialize() async {
-//     final path = await fullPath;
-//     var database = await openDatabase(
-//       path,
-//       version: 1,
-//       onCreate: (db, version) async {
-//         // Burada tablo oluşturma sorgusu doğrudan veriliyor
-//         await db.execute('''
-//           CREATE TABLE IF NOT EXISTS todos (
-//             "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-//             "title" TEXT NOT NULL,
-//             "created_at" INTEGER NOT NULL DEFAULT (cast(strftime('%s','now') as int)),
-//             "updated_at" INTEGER
-//           );
-//         ''');
-//       },
-//       singleInstance: true, // Tek bir instance kullanılması sağlanır
-//     );
-//     return database;
-//   }
-// }

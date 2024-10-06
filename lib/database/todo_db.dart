@@ -4,9 +4,10 @@ import 'package:todoapp/database/database_service.dart';
 import '../model/todo.dart';
 
 class TodoDB {
-  final tableName = 'todos';
+  final tableName = 'todos'; //Will be used database in table
 
   Future<void> createTable(Database database) async {
+    //create table sql code
     await database.execute("""CREATE TABLE IF NOT EXISTS $tableName (
      "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
      "title" TEXT NOT NULL,
@@ -23,7 +24,7 @@ class TodoDB {
     );
   }
 
-  Future<List<ToDo>> fetchAll() async {
+  Future<List<ToDo>> fetchAll() async {//todoList
     final database = await DatabaseService().database; //connect database
     final todos = await database.rawQuery(
         '''SELECT* from $tableName ORDER BY COALESCE(updated_at,created_at)''');

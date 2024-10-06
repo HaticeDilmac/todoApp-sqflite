@@ -14,15 +14,13 @@ class ToDo {
   factory ToDo.fromSqfliteDatabase(Map<String, dynamic> map) => ToDo(
         id: map['id'] ?? 0,
         title: map['title'] ?? '',
-        
-        // Null kontrolü ekleyelim ve varsa DateTime çevirisini yapalım
         createdTime: map['created_at'] != null
-            ? DateTime.fromMillisecondsSinceEpoch(map['created_at']).toIso8601String()
+            ? DateTime.fromMillisecondsSinceEpoch(map['created_at'])
+                .toIso8601String()
             : '',
-
-        // updatedTime için de null kontrolü yapalım
         updatedTime: map['updated_at'] != null
-            ? DateTime.fromMillisecondsSinceEpoch(map['updated_at']).toIso8601String()
+            ? DateTime.fromMillisecondsSinceEpoch(map['updated_at'])
+                .toIso8601String()
             : null,
       );
 }
